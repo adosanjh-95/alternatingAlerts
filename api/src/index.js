@@ -1,10 +1,19 @@
 const express = require("express");
+const dotenv = require("dotenv");
+
+dotenv.config({ path: "./.env" });
+
+const people = require("../routes/people");
+
 const app = express();
-const PORT = 8080; // default port to listen
+
+app.use("/people", people);
+
+const PORT = process.env.PORT;
 
 // define a route handler for the default home page
 app.get("/", (req, res) => {
-  res.send("Hello world!");
+  res.send(`Hello world on port ${PORT}!`);
 });
 
 // start the Express server
