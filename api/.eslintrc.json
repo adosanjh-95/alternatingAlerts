@@ -4,7 +4,7 @@
     "commonjs": true,
     "es6": true
   },
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -12,5 +12,8 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "rules": { "no-unused-vars": ["error", { "argsIgnorePattern": "next" }] }
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "prettier/prettier": "error"
+  }
 }
