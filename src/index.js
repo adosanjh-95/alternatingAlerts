@@ -10,10 +10,11 @@ const app = express();
 app.use("/people", people);
 
 const PORT = process.env.PORT;
+const TEST = process.env.TEST;
 
 // define a route handler for the default home page
 app.get("/", (req, res) => {
-  res.send(`Hello world on port ${PORT}!`);
+  res.send(`Hello world on port ${TEST}!`);
 });
 
 // start the Express server
