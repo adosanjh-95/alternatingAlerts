@@ -31,3 +31,31 @@ exports.createPerson = async (req, res, next) => {
     });
   }
 };
+
+exports.deletePerson = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const person = await People.findById(id);
+
+    if (!person) {
+      return res.status(404).json({
+        success: false,
+        error: "Resource not found"
+      });
+    }
+
+    await person.remove();
+
+    return res.status(200).json({
+      success: true,
+      data: {}
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      errors: "Server error"
+    });
+  }
+};
