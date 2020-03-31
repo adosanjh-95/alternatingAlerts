@@ -1,9 +1,11 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const connectDB = require("../db");
+const people = require("../routes/people");
 
 dotenv.config({ path: "./.env" });
 
-const people = require("../routes/people");
+connectDB();
 
 const app = express();
 
@@ -20,7 +22,7 @@ const authenticateKeyMiddleware = (req, res, next) => {
 };
 
 app.use(authenticateKeyMiddleware);
-
+app.use(express.json());
 app.use("/people", people);
 
 const PORT = process.env.PORT;
