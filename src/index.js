@@ -1,12 +1,28 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const connectDB = require("../db");
+const people = require("../routes/people");
 
 dotenv.config({ path: "./.env" });
 
-const people = require("../routes/people");
+connectDB();
 
 const app = express();
 
+const SUBSCRIPTION_KEY = process.env.SUBSCRIPTION_KEY;
+
+const authenticateKeyMiddleware = (req, res, next) => {
+  const subscriptionKey = req.get("subscriptionKey");
+
+  if (!subscriptionKey || subscriptionKey !== SUBSCRIPTION_KEY) {
+    res.send("Unauthorized");
+    return;
+  }
+  next();
+};
+
+app.use(authenticateKeyMiddleware);
+app.use(express.json());
 app.use("/people", people);
 
 const PORT = process.env.PORT;
