@@ -59,3 +59,30 @@ exports.deletePerson = async (req, res, next) => {
     });
   }
 };
+
+exports.updatePerson = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const person = await People.findById(id);
+
+    if (!person) {
+      return res.status(404).json({
+        success: false,
+        error: "Resource not found"
+      });
+    }
+
+    await person.update(req.body);
+
+    return res.status(201).json({
+      success: true
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      errors: "Server error"
+    });
+  }
+};
