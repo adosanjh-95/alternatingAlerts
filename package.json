@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node .",
-    "dev": "nodemon .",
+    "start": "NODE_ENV=production node .",
+    "dev": "NODE_ENV=development nodemon .",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "NODE_ENV=test jest --verbose"
   },
   "keywords": [],
   "author": "",
