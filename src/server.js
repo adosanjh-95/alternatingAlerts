@@ -13,14 +13,14 @@ connectDB();
 
 const app = express();
 
-app.use(authenticateKeyMiddleware);
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send(`Welcome to my test app`);
+});
+
+app.use(authenticateKeyMiddleware);
 app.use("/people", peopleRouter);
 app.use(unknownEndpointMiddleware);
-
-// define a route handler for the default home page
-app.get("/", (req, res) => {
-  res.send(`Hello world`);
-});
 
 module.exports = app;

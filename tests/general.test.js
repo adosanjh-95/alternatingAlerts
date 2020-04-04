@@ -5,6 +5,10 @@ const { SUBSCRIPTION_KEY } = require("../config");
 
 const api = supertest(app);
 
+test("the base URL can be accessed without a subscription key", async () => {
+  await api.get("/").expect(200);
+});
+
 test("no subscription key returns an error", async () => {
   await api.get("/people").expect(401);
 });

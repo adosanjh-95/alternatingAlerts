@@ -7,7 +7,7 @@
     "start": "NODE_ENV=production node .",
     "dev": "NODE_ENV=development nodemon .",
     "lint": "eslint .",
-    "test": "NODE_ENV=test jest --verbose --runInBand"
+    "test": "NODE_ENV=test jest --verbose --runInBand --coverage"
   },
   "keywords": [],
   "author": "",
@@ -33,6 +33,14 @@
     }
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    }
   }
 }
