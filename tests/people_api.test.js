@@ -18,7 +18,6 @@ const initialNames = [
 describe("people model tests", () => {
   beforeEach(async () => {
     await People.deleteMany({}); //empty object to match all entries
-
     await People.insertMany(initialNames);
   });
 
@@ -68,7 +67,8 @@ describe("people model tests", () => {
       .expect(200);
   });
 
-  afterAll(() => {
-    mongoose.connection.close();
+  afterAll(async () => {
+    await mongoose.connection.db.dropCollection("people");
+    await mongoose.connection.close();
   });
 });
