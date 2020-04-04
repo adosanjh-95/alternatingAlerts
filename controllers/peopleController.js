@@ -73,7 +73,7 @@ exports.updatePerson = async (req, res, next) => {
       });
     }
 
-    await person.update(req.body);
+    await person.updateOne(req.body);
 
     return res.status(201).json({
       success: true
