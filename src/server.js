@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("../db");
 const peopleRouter = require("../routes/people");
+const userRouter = require("../routes/user");
 const {
   authenticateKeyMiddleware,
   unknownEndpointMiddleware
@@ -18,6 +19,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send(`Welcome to my test app`);
 });
+
+app.use("/user", userRouter);
 
 app.use(authenticateKeyMiddleware);
 app.use("/people", peopleRouter);
