@@ -67,8 +67,9 @@ describe("people model tests", () => {
       .expect(200);
   });
 
-  afterAll(async () => {
+  afterAll(async done => {
     await mongoose.connection.db.dropCollection("people");
     await mongoose.connection.close();
+    done();
   });
 });

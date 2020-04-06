@@ -20,6 +20,7 @@ test("unrecognised endpoint leads to 404 error", async () => {
     .expect(404);
 });
 
-afterAll(() => {
-  mongoose.connection.close();
+afterAll(async done => {
+  await mongoose.connection.close();
+  done();
 });
