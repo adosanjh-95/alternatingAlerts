@@ -4,7 +4,7 @@ const connectDB = require("../db");
 const peopleRouter = require("../routes/people");
 const userRouter = require("../routes/user");
 const {
-  authenticateKeyMiddleware,
+  authenticationMiddleware,
   unknownEndpointMiddleware
 } = require("../middleware");
 
@@ -21,8 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", userRouter);
-
-app.use(authenticateKeyMiddleware);
+app.use(authenticationMiddleware);
 app.use("/people", peopleRouter);
 app.use(unknownEndpointMiddleware);
 
