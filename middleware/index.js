@@ -30,10 +30,8 @@ const authenticationMiddleware = (req, res, next) => {
         return res.status(401).json("Authentication failed - invalid token");
       }
     }
-    return;
+    next();
   });
-
-  next();
 };
 
 const unknownEndpointMiddleware = (req, res, next) => {

@@ -11,51 +11,53 @@ const EXPIRED_TOKEN =
 
 let authorizationToken = "";
 
-beforeAll(async () => {
-  const hash = await bcrypt.hash("password", 10);
-  await User.create({ username: "testUser", passwordHash: hash });
-  const response = await api
-    .post("/user/login")
-    .send({ username: "testUser", password: "password" });
+describe("general flow tests", () => {
+  beforeAll(async () => {
+    const hash = await bcrypt.hash("password", 10);
+    await User.create({ username: "testUser", passwordHash: hash });
+    const response = await api
+      .post("/user/login")
+      .send({ username: "testUser", password: "password" });
 
-  authorizationToken = response.body.accessToken;
-});
+    authorizationToken = response.body.accessToken;
+  });
 
-test("the base URL can be accessed without an authorization header", async () => {
-  await api.get("/").expect(200);
-});
+  it("the base URL can be accessed without an authorization header", async () => {
+    await api.get("/").expect(200);
+  });
 
-test("no authorization header returns an error", async () => {
-  await api.get("/people").expect(401);
-});
+  it("no authorization header returns an error", async () => {
+    await api.get("/people").expect(401);
+  });
 
-test("setting an invalid authorization header returns an error", async () => {
-  await api.get("/people").set("authorization", "bearerwewee").expect(401);
-});
+  it("setting an invalid authorization header returns an error", async () => {
+    await api.get("/people").set("authorization", "bearerwewee").expect(401);
+  });
 
-test("setting an invalid authorization token returns an error", async () => {
-  await api
-    .get("/people")
-    .set("authorization", "bearer sdksdkskkskfs")
-    .expect(401);
-});
+  it("setting an invalid authorization token returns an error", async () => {
+    await api
+      .get("/people")
+      .set("authorization", "bearer sdksdkskkskfs")
+      .expect(401);
+  });
 
-test("setting an expired authorization token returns an error", async () => {
-  await api
-    .get("/people")
-    .set("authorization", `bearer ${EXPIRED_TOKEN}`)
-    .expect(401);
-});
+  it("setting an expired authorization token returns an error", async () => {
+    await api
+      .get("/people")
+      .set("authorization", `bearer ${EXPIRED_TOKEN}`)
+      .expect(401);
+  });
 
-test("unrecognised endpoint leads to 404 error", async () => {
-  await api
-    .get("/dasfsfsfsfs")
-    .set("authorization", `bearer ${authorizationToken}`)
-    .expect(404);
-});
+  it("unrecognised endpoint leads to 404 error", async () => {
+    await api
+      .get("/dasfsfsfsfs")
+      .set("authorization", `bearer ${authorizationToken}`)
+      .expect(404);
+  });
 
-afterAll(async done => {
-  await mongoose.connection.db.dropCollection("users");
-  await mongoose.connection.close();
-  done();
+  afterAll(async done => {
+    await mongoose.connection.db.dropCollection("users");
+    await mongoose.connection.close();
+    done();
+  });
 });
