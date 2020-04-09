@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const { SUBSCRIPTION_KEY } = require("../config");
+const jwt = require("jsonwebtoken");
 
 exports.registerUser = async (req, res, next) => {
   const { username, password } = req.body;
@@ -45,9 +46,18 @@ exports.loginUser = async (req, res, next) => {
     if (user) {
       const correctPassword = await bcrypt.compare(password, user.passwordHash);
       if (correctPassword) {
+        const userForToken = {
+          username: user.username,
+          id: user._id
+        };
+
+        const accessToken = jwt.sign(userForToken, SUBSCRIPTION_KEY, {
+          expiresIn: "15m"
+        });
+
         return res.status(200).json({
           username,
-          accessKey: SUBSCRIPTION_KEY
+          accessToken
         });
       } else {
         return res

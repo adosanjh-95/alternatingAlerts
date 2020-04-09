@@ -9,6 +9,7 @@ const api = supertest(app);
 describe("user model tests", () => {
   beforeEach(async () => {
     await User.deleteMany({});
+    await User.create({ username: "xyz", password: "1234" });
   });
 
   it("a user can register successfully", async () => {
@@ -17,7 +18,7 @@ describe("user model tests", () => {
       .send({ username: "test", password: "test" })
       .expect(201);
 
-    expect(response.body.success).toBe(true);
+    expect(response.body.success).toBeTruthy();
   });
 
   it("a user cannot register with the same username that already exists", async () => {
@@ -40,10 +41,13 @@ describe("user model tests", () => {
     const hash = await bcrypt.hash("password", 10);
     await User.create({ username: "test", passwordHash: hash });
 
-    await api
+    const { body } = await api
       .post("/user/login")
       .send({ username: "test", password: "password" })
       .expect(200);
+
+    expect(body.username).toBeTruthy();
+    expect(body.accessToken).toBeTruthy();
   });
 
   it("a registered user cannot login with an incorrect password", async () => {
