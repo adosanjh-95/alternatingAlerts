@@ -18,12 +18,7 @@ exports.registerUser = async (req, res, next) => {
         .json(`Username ${username} is already in use - please choose another`);
     }
 
-    const newUser = new User({
-      username,
-      passwordHash
-    });
-
-    await newUser.save();
+    await User.create({ username, passwordHash });
 
     return res.status(201).json({
       success: true,
@@ -70,7 +65,6 @@ exports.loginUser = async (req, res, next) => {
         .json(`A user with username ${username} was not found`);
     }
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       errors: err
