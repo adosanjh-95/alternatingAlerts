@@ -1,14 +1,14 @@
 const User = require("../models/User");
-const bcrypt = require("bcrypt");
+const { compare, hash } = require("bcrypt");
 const { SUBSCRIPTION_KEY } = require("../config");
-const jwt = require("jsonwebtoken");
+const { sign } = require("jsonwebtoken");
 
 exports.registerUser = async (req, res, next) => {
   const { username, password } = req.body;
 
   const saltRounds = 10;
   try {
-    const passwordHash = await bcrypt.hash(password, saltRounds);
+    const passwordHash = await hash(password, saltRounds);
 
     const existingUser = await User.find({ username });
 
@@ -44,14 +44,14 @@ exports.loginUser = async (req, res, next) => {
     const user = await User.findOne({ username });
 
     if (user) {
-      const correctPassword = await bcrypt.compare(password, user.passwordHash);
+      const correctPassword = await compare(password, user.passwordHash);
       if (correctPassword) {
         const userForToken = {
           username: user.username,
           id: user._id
         };
 
-        const accessToken = jwt.sign(userForToken, SUBSCRIPTION_KEY, {
+        const accessToken = sign(userForToken, SUBSCRIPTION_KEY, {
           expiresIn: "15m"
         });
 
