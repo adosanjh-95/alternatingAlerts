@@ -8,7 +8,7 @@
     "dev": "NODE_ENV=development nodemon -e js,yaml .",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --verbose --runInBand --coverage",
-    "test_CI": "NODE_ENV=test jest --ci --runInBand --reporters=default --reporters=jest-junit"
+    "testCI": "NODE_ENV=test jest --ci --runInBand --reporters=default --reporters=jest-junit"
   },
   "keywords": [],
   "author": "",
