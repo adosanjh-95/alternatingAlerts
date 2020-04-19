@@ -1,4 +1,5 @@
 const express = require("express");
+const helmet = require("helmet");
 const dotenv = require("dotenv");
 const connectDB = require("../db");
 const peopleRouter = require("../routes/people");
@@ -19,6 +20,7 @@ dotenv.config({ path: "./.env" });
 connectDB();
 
 const app = express();
+app.use(helmet());
 
 const swaggerSpec = swaggerJSDoc(swaggerDocsOptions);
 app.use(documentationPath, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
