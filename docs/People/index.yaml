@@ -1,0 +1,154 @@
+paths:
+  /people:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - People
+      summary: Returns all people
+      produces:
+        - application/json
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/definitions/personObject"
+        401:
+          $ref: "#/responses/UnauthorizedError"
+        500:
+          $ref: "#/responses/ServerError"
+
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - People
+      summary: Creates a new person
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/personInformation"
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: "#/definitions/personObject"
+        401:
+          $ref: "#/responses/UnauthorizedError"
+        500:
+          $ref: "#/responses/ServerError"
+
+  /people/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: The id of the person to delete
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - People
+      summary: Updates a person
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/personInformation"
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        401:
+          $ref: "#/responses/UnauthorizedError"
+        404:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+                    example: "Resource not found"
+        500:
+          $ref: "#/responses/ServerError"
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - People
+      summary: Deletes a person
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        401:
+          $ref: "#/responses/UnauthorizedError"
+        404:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  error:
+                    type: string
+                    example: "Resource not found"
+        500:
+          $ref: "#/responses/ServerError"
+
+responses:
+  $ref: "../responses.yaml"
+
+definitions:
+  personObject:
+    type: object
+    properties:
+      __id:
+        type: string
+      name:
+        type: string
+      __v:
+        type: integer
+  personInformation:
+    type: object
+    properties:
+      name:
+        type: string

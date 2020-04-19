@@ -8,6 +8,12 @@ const {
   authenticationMiddleware,
   unknownEndpointMiddleware
 } = require("../middleware");
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const {
+  swaggerDocsOptions,
+  documentationPath
+} = require("../docs/swaggerConfig");
 
 dotenv.config({ path: "./.env" });
 
@@ -15,6 +21,9 @@ connectDB();
 
 const app = express();
 app.use(helmet());
+
+const swaggerSpec = swaggerJSDoc(swaggerDocsOptions);
+app.use(documentationPath, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(express.json());
 

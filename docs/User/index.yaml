@@ -1,0 +1,87 @@
+paths:
+  /user/register:
+    post:
+      tags:
+        - User
+      summary: Creates a new user
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/userInformation"
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "This username is already in use"
+        500:
+          $ref: "#/responses/ServerError"
+
+  /user/login:
+    post:
+      tags:
+        - User
+      summary: Login an existing user
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/userInformation"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  accessToken:
+                    type: string
+        400:
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Incorrect username/password combination"
+        404:
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "Username not found"
+        500:
+          $ref: "#/responses/ServerError"
+
+definitions:
+  userInformation:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+
+responses:
+  $ref: "../responses.yaml"
