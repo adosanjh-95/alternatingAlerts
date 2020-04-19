@@ -33,7 +33,7 @@ paths:
                 type: string
                 example: "This username is already in use"
         500:
-          $ref: "#/components/responses/ServerError"
+          $ref: "#/responses/ServerError"
 
   /user/login:
     post:
@@ -72,7 +72,7 @@ paths:
                 type: string
                 example: "Username not found"
         500:
-          $ref: "#/components/responses/ServerError"
+          $ref: "#/responses/ServerError"
 
 definitions:
   userInformation:
@@ -83,15 +83,5 @@ definitions:
       password:
         type: string
 
-components:
-  responses:
-    ServerError:
-      content:
-        applicaton/json:
-          schema:
-            type: object
-            properties:
-              success:
-                type: boolean
-              errors:
-                type: string
+responses:
+  $ref: "../responses.yaml"

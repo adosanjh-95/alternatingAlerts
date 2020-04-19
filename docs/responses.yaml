@@ -1,0 +1,17 @@
+responses:
+  ServerError:
+    content:
+      applicaton/json:
+        schema:
+          type: object
+          properties:
+            success:
+              type: boolean
+            errors:
+              type: string
+  UnauthorizedError:
+    content:
+      application/json:
+        schema:
+          type: string
+          example: "Authentication failed - a valid bearer token must be provided"

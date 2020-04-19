@@ -48,8 +48,7 @@ exports.deletePerson = async (req, res, next) => {
     await person.remove();
 
     return res.status(200).json({
-      success: true,
-      data: {}
+      success: true
     });
   } catch (err) {
     console.log(err);
@@ -79,7 +78,6 @@ exports.updatePerson = async (req, res, next) => {
       success: true
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       errors: "Server error"
