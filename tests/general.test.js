@@ -3,6 +3,7 @@ const supertest = require("supertest");
 const app = require("../src/server");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const { documentationPath } = require("../docs/swaggerConfig");
 
 const api = supertest(app);
 
@@ -24,6 +25,10 @@ describe("general flow tests", () => {
 
   it("the base URL can be accessed without an authorization header", async () => {
     await api.get("/").expect(200);
+  });
+
+  it("the docs URL can be accessed without an authorization header", async () => {
+    await api.get(documentationPath).expect(301);
   });
 
   it("no authorization header returns an error", async () => {
