@@ -1,5 +1,5 @@
 const { SUBSCRIPTION_KEY } = require("../config");
-const jwt = require("jsonwebtoken");
+const { verify } = require("jsonwebtoken");
 
 const AUTHORIZATION_HEADER = "authorization";
 
@@ -20,18 +20,18 @@ const authenticationMiddleware = (req, res, next) => {
       .json("Authentication failed - a valid bearer token must be provided");
   }
 
-  jwt.verify(token, SUBSCRIPTION_KEY, function (err) {
-    if (err) {
-      if (err.name === "TokenExpiredError") {
-        return res.status(401).json("Authentication failed - token expired");
-      }
-
-      if (err.name === "JsonWebTokenError") {
-        return res.status(401).json("Authentication failed - invalid token");
-      }
-    }
+  try {
+    verify(token, SUBSCRIPTION_KEY);
     next();
-  });
+  } catch (err) {
+    let message = "Authentication failed - invalid token";
+
+    if (err.name === "TokenExpiredError") {
+      message = "Authentication failed - token expired";
+    }
+
+    return res.status(401).json(message);
+  }
 };
 
 const unknownEndpointMiddleware = (req, res, next) => {
