@@ -16,6 +16,6 @@ jobs: # a collection of steps
           command: npm i jest-junit -D
       - run:
           name: Run tests with JUnit as reporter
-          command: npm testCI
+          command: npm run testCI
           environment:
           JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
