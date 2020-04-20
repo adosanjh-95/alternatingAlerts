@@ -12,10 +12,9 @@ jobs: # a collection of steps
           name: install-npm-wee
           command: npm install
       - run:
-          name: Install JUnit coverage reporter
-          command: npm i jest-junit -D
-      - run:
-          name: Run tests with JUnit as reporter
-          command: npm run testCI
+          name: run tests
           environment:
-          JEST_JUNIT_OUTPUT_DIR: "reports/junit/js-test-results.xml"
+            JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
+          command: npm test -- --ci --testResultsProcessor="jest-junit"
+      - store_test_results:
+          path: reports/junit
