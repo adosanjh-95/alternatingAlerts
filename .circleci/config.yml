@@ -15,6 +15,6 @@ jobs: # a collection of steps
           name: run tests
           environment:
             JEST_JUNIT_OUTPUT: reports/junit/js-test-results.xml
-          command: npm test -- --ci --testResultsProcessor="jest-junit"
+          command: npm test -- --ci --reporters=default --reporters=jest-junit
       - store_test_results:
           path: reports/junit
